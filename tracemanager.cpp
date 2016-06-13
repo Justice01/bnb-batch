@@ -286,7 +286,7 @@ int TraceManager::parseTrace(const QString fileName, int& procNum, int& maxTime,
     return 0;
 }
 
-int TraceManager::countStatistics(double &speedup, double &efficiency, int procNum, int maxTime)
+int TraceManager::countStatistics(double& speedup, double& efficiency, int procNum, int maxTime)
 {
     QDir dir;
     if(!dir.exists("traces")){dir.mkdir("traces");return 1;}
@@ -317,6 +317,32 @@ int TraceManager::countStatistics(double &speedup, double &efficiency, int procN
         }
     }
     else return 3;
+    return 0;
+}
+
+int TraceManager::countFirstProblems(const QString fileName, int& firstProblems)
+{
+    firstProblems = 0;
+    QFile trace(fileName);
+    if(trace.open(QIODevice::ReadOnly|QIODevice::Text))
+    {
+        QString line;
+        QStringList traceLine;
+        while(!trace.atEnd())
+        {
+            line = trace.readLine();
+            traceLine = line.split(' ');
+            if(traceLine.length()>12)
+            {
+                if(traceLine.at(0).toInt()!=0)
+                {
+                    firstProblems = traceLine.at(12).toInt();
+                    break;
+                }
+            }
+        }
+        trace.close();
+    }
     return 0;
 }
 

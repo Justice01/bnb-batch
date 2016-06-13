@@ -151,8 +151,9 @@ int main(int argc, char *argv[])
             double efficiency = 0.0;
             TraceManager::countStatistics(speedup,efficiency,procNum,maxTime);
             line[line.length()-1] = ' ';
-
-            rslts.write(line.append(QString::number(speedup)).append(" ").append(QString::number(efficiency)).append("\n").toUtf8());
+            int firstProblems = 0;
+            TraceManager::countFirstProblems(s,firstProblems);
+            rslts.write(line.append(QString::number(speedup)).append(" ").append(QString::number(efficiency)).append(" ").append(QString::number(firstProblems)).append("\n").toUtf8());
         }
 
     }
